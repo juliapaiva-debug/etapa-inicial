@@ -163,5 +163,6 @@ grep HSP arquivo.pqr
 grep ASP arquivo.pqr
 grep GLU arquivo.pqr
 ```
+Em seguida, preparar o arquivo no CHARMM-GUI.
 
 👀 Aguarde as etapas dos próximos capítulos… 
