@@ -43,17 +43,17 @@ python split_ns2b_ns3.py 6MO2.pdb 6MO2_sep.pdb
 ```
 
 ## 📉 Etapa 1 - Separação das proteínas e verificação dos resíduos
-A primeira etapa é separar as proteínas em um único arquivo para cada. Então, no pymol, selecionar "chains" e clicar nas cadeias que voce quer excluir. Em seguida, clicar em (sele) ➜ "A" ➜ "remove atoms". Restará somente a proteina com as cadeias de interesse. Salvar como denv_B_D. 
+A primeira etapa é separar as proteínas em um único arquivo para cada. Então, no pymol, selecionar "chains" e clicar nas cadeias que você quer excluir. Em seguida, clicar em (sele) ➜ "A" ➜ "remove atoms". Restará somente a proteína com as cadeias de interesse. Salvar como denv_B_D. 
 
-Conferir se há resíduos faltantes (sem densidade eletrônica) no seu sistema. Para isso, buscar por linhas tracejadas no seu .pdb aberto no Pymol, ou na aba "structure" no PDB. Caso haja, iremos modelar na proxima etapa. 
+Conferir se há resíduos faltantes (sem densidade eletrônica) no seu sistema. Para isso, buscar por linhas tracejadas no seu .pdb aberto no Pymol ou na aba "structure" no PDB. Caso haja, iremos modelar na próxima etapa. 
 
-Outra parte importante, é a necessidade de verificar se os resíduos no .pdb estão com a numeração correta. Para isso, ir na aba "sequence" no PDB de sua estrutura. Nessa aba, havera o codigo Uniprot dessa respectiva proteina. Colocar esse codigo no Uniprot e ir ate a sessão "sequence", onde terá a sequência completa da proteina. Então, comparar a sequencia do seu .pdb com a sequencia de referencia da proteina e ver se a numeração esta compativel.
+Outra parte importante é a necessidade de verificar se os resíduos no .pdb estão com a numeração correta. Para isso, vá na aba "sequence" no PDB da sua estrutura. Nessa aba, haverá o código Uniprot da respectiva proteína. Colocar esse código no Uniprot e ir até a seção "sequence", onde terá a sequência completa da proteína. Então, comparar a sequência do seu .pdb com a sequência de referência da proteína e ver se a numeração está compatível.
 
-Dica: no pymol, ver a sequência dos 5 primeiros resíduos e dar cntrl + F no uniprot com esses 5 resíduos para encontra-los.
+Dica: no pymol, ver a sequência dos 5 primeiros resíduos e dar "ctrl+F" no uniprot com esses 5 resíduos para encontrá-los.
 
-**OBS.:** Pode ocorrer que um desses 5 resíduos tenha um dos aminoácidos diferente; não se preocupe, o importante é que a maioria esteja igual ao do PDB aberto no pymol.
+**OBS.:** Pode ocorrer que um desses 5 resíduos tenha alguns aminoácidos diferentes; não se preocupe, o importante é que a maioria esteja igual à do PDB aberto no pymol.
 
-Caso a numeração não esteja batendo, será necessário reordenar os resíduos. Para isso, faremos um script no claude, nao se perde tempo com isso manualmente. 😎👍
+Caso a numeração não esteja batendo, será necessário reordenar os resíduos. Para isso, faremos um script no Claude; não se perde tempo com isso manualmente. 😎👍
 
 
 ## 📉 Etapa 2 - Modelagem comparativa
@@ -61,9 +61,9 @@ Caso a numeração não esteja batendo, será necessário reordenar os resíduos
 
 Para modelar a região faltante, temos que modelar a sequência da nossa proteína contra o próprio modelo .pdb. 
 
-Para obter a nossa sequência que será modelada, ir na página pdb da estrutura, > "Display" >"FASTA" > salvar essa sequência que será utilizada em breve.
+Para obter a nossa sequência que será modelada, vá à página do PDB da estrutura > "Display" >"FASTA" > e salve essa sequência que será utilizada em breve.
 
-**OBS.:** Caso haja sequencias adicionais em alguma das cadeias, como o linker de glicina, não é necessário copiá-lo.
+**OBS.:** Caso haja sequências adicionais em alguma das cadeias, como o linker de glicina, não é necessário copiá-lo.
 
 **Parte 1 - Criação do arquivo .ali**
 
@@ -82,15 +82,15 @@ Na segunda linha: "sequence:"mesmo nome":::::::0.00: 0.00"
 
 A partir da terceira linha, deve-se conter a sequência que será modelada
 
-**⚠️ O símbolo / representa uma quebra de cadeia, sempre deverá estar entre o ultimo residuo de uma cadeia e o primeiro da outra**
+**⚠️ O símbolo / representa uma quebra de cadeia, sempre deverá estar entre o último resíduo de uma cadeia e o primeiro da outra**
 
-**⚠️ O símbolo . representa um ligante, sempre deverá estar na cadeia em que esta o ligante**
+**⚠️ O símbolo . representa um ligante, sempre deverá estar na cadeia em que está o ligante**
 
-**⚠️ o símbolo * sempre será o último caracter da sequência**
+**⚠️ o símbolo * sempre será o último caractere da sequência**
 
 **Parte 2 - Alinhamento entre sequência e o modelo**
 
-O linhamento é realizado através do seguinte script:
+O alinhamento é realizado através do seguinte script:
 
 ```bash
 from modeller import *
@@ -115,7 +115,7 @@ aln.write(file='denv-template.ali', alignment_format='PIR') #nomes dos outputs
 aln.write(file='denv-template.pap', alignment_format='PAP')
 ```
 
-Com isso, serão gerados os arquivos .pir e .pap de Alinhamento
+Com isso, serão gerados os arquivos .pir e .pap de alinhamento
 
 **Parte 3 - Geração dos modelos**
 A última parte no modeller é a geração dos modelos por homologia.
@@ -128,14 +128,14 @@ from modeller.automodel import *
 
 env = Environ()
 env.io.hetatm = True        # necessário para o ligante ser incluído no modelo final
-# env.io.water = False       # opcional, se quiser excluir aguas
+# env.io.water = False       # opcional, se quiser excluir águas
 
 a = AutoModel(env, alnfile='denv-template.ali',
               knowns='templateAC', sequence='denv',  #Os nomes devem bater com o script anterior
               assess_methods=(assess.DOPE,
                               assess.GA341))
 a.starting_model = 1
-a.ending_model = 100 #Numero de modelos a ser gerado
+a.ending_model = 100 #Número de modelos a ser gerado
 a.make()
 ```
 
@@ -153,7 +153,7 @@ O melhor modelo será o primeiro da lista
 
 Muitas vezes, o modelo gerado por modelagem comparativa não possui uma boa qualidade estrutural. Por isso, precisamos refiná-lo. 
 
-A primeira etapa é determinar os estados de protonação dos residuos. Inicialmente, deve-se adicionar o .pdb modelado no PDB2PQR. Selecionar o pH 7.4, campo de força AMBER e saída CHARMM. Ao término do programa, baixar o arquivo .pqr.
+A primeira etapa é determinar os estados de protonação dos resíduos. Inicialmente, deve-se adicionar o .pdb modelado no PDB2PQR. Selecionar o pH 7.4, campo de força AMBER e saída CHARMM. Ao término do programa, baixar o arquivo .pqr.
 
 Para verificar os estados de protonação, utilizar os comandos:
 
@@ -163,3 +163,5 @@ grep HSP arquivo.pqr
 grep ASP arquivo.pqr
 grep GLU arquivo.pqr
 ```
+
+👀 Aguarde as etapas dos próximos capítulos… 
