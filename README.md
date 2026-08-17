@@ -1,8 +1,5 @@
 # Preparo dos sistemas
 
-
-# Preparo dos sistemas para redocking
-
 ## Usando o terminal do linux pela primeira vez
 
 1. Abra o terminal do Linux e digite: 
